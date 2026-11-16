@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-11-09T19:58:14.548Z",
+  "attempt": 29,
+  "status": "COOLDOWN",
+  "message": "Limitation de débit OCI. Pause de 2 minutes."
+}

@@ -1,0 +1,36 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Intense Green Neon Glow -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="75dp"
+                android:startColor="#6610B981"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+    <!-- Raised 3D Button Surface -->
+    <item android:top="8dp" android:bottom="8dp" android:left="8dp" android:right="8dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#10B981"
+                android:centerColor="#059669"
+                android:endColor="#047857" />
+            <stroke
+                android:width="2.5dp"
+                android:color="#34D399" />
+        </shape>
+    </item>
+    <!-- Inner Radiant Core -->
+    <item android:top="16dp" android:bottom="16dp" android:left="16dp" android:right="16dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="35dp"
+                android:startColor="#80A7F3D0"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+</layer-list>

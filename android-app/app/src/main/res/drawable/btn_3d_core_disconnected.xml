@@ -1,0 +1,36 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Glow Shadow -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="70dp"
+                android:startColor="#336366F1"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+    <!-- Raised 3D Button Surface -->
+    <item android:top="8dp" android:bottom="8dp" android:left="8dp" android:right="8dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#252F48"
+                android:centerColor="#182033"
+                android:endColor="#0E1424" />
+            <stroke
+                android:width="2dp"
+                android:color="#4F5D7E" />
+        </shape>
+    </item>
+    <!-- Top Highlight Glass Reflection -->
+    <item android:top="12dp" android:bottom="12dp" android:left="12dp" android:right="12dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="45dp"
+                android:startColor="#226366F1"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+</layer-list>

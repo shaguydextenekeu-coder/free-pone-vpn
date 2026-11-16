@@ -1,0 +1,31 @@
+# Gradle and Android build files
+.gradle/
+build/
+*/build/
+app/build/
+*.apk
+*.aab
+
+# Android Studio & IDE
+.idea/
+*.iml
+.DS_Store
+local.properties
+.cxx/
+captures/
+
+# Backend & Database
+node_modules/
+backend/node_modules/
+*.db
+*.db-journal
+*.log
+
+# Sensitive keys and secrets
+*.key
+*.pem
+*.jks
+*.keystore
+
+# Temporary and OS files
+Thumbs.db

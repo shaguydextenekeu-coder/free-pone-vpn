@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Free-Pone</string>
+    <string name="tagline">Votre internet sécurisé. Partout.</string>
+    <string name="status_disconnected">Déconnecté</string>
+    <string name="status_connected">Forfait Actif · Connecté</string>
+    <string name="status_expired">Forfait expiré</string>
+    <string name="reception">Réception</string>
+    <string name="envoi">Envoi</string>
+    <string name="default_data">0 o</string>
+    <string name="btn_activate">Activer un forfait</string>
+    <string name="btn_renew">Touchez pour renouveler votre forfait</string>
+</resources>

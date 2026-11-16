@@ -1,0 +1,26 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Glowing Gradient Border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp" />
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#6366F1"
+                android:centerColor="#EC4899"
+                android:endColor="#06B6D4" />
+        </shape>
+    </item>
+    <!-- Dark Inner Surface with Subtle Sheen -->
+    <item android:top="2dp" android:bottom="2dp" android:left="2dp" android:right="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="22dp" />
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#1E1B4B"
+                android:centerColor="#0F172A"
+                android:endColor="#090D16" />
+        </shape>
+    </item>
+</layer-list>

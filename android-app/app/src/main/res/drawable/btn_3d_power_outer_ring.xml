@@ -1,0 +1,31 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Drop Shadow -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#030508" />
+        </shape>
+    </item>
+    <!-- Outer Bevel Ring -->
+    <item android:top="4dp" android:bottom="4dp" android:left="4dp" android:right="4dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#2A3347"
+                android:centerColor="#151C2C"
+                android:endColor="#0B0F1C" />
+            <stroke
+                android:width="2dp"
+                android:color="#3B4864" />
+        </shape>
+    </item>
+    <!-- Inner Dark Well -->
+    <item android:top="10dp" android:bottom="10dp" android:left="10dp" android:right="10dp">
+        <shape android:shape="oval">
+            <solid android:color="#0A0D16" />
+            <stroke
+                android:width="1dp"
+                android:color="#1A2234" />
+        </shape>
+    </item>
+</layer-list>

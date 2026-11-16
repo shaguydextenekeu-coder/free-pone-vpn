@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#07090E</color>
+    <color name="bg_surface">#0D121F</color>
+    <color name="card_dark">#121826</color>
+    <color name="card_dark_elevated">#172033</color>
+    <color name="border_dark">#243047</color>
+    <color name="primary_indigo">#6366F1</color>
+    <color name="primary_purple">#8B5CF6</color>
+    <color name="neon_cyan">#00F0FF</color>
+    <color name="neon_emerald">#10B981</color>
+    <color name="neon_pink">#EC4899</color>
+    <color name="neon_amber">#F59E0B</color>
+    <color name="neon_red">#EF4444</color>
+    <color name="text_white">#F8FAFC</color>
+    <color name="text_muted">#8A99AD</color>
+    <color name="text_dim">#475569</color>
+    <color name="accent_blue">#38BDF8</color>
+</resources>

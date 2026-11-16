@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free-Pone VPN · Centre de Contrôle Professionnel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --card-bg: #0f1523;
+      --card-elevated: #162035;
+      --border-color: #212d45;
+      --primary: #6366f1;
+      --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+      --neon-cyan: #00f0ff;
+      --neon-green: #10b981;
+      --neon-pink: #ec4899;
+      --neon-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #8b9bb4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); padding: 24px; min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* Top Bar */
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-logo { width: 48px; height: 48px; border-radius: 14px; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; color: #fff; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4); }
+    .brand-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .brand-sub { font-size: 12px; color: var(--neon-cyan); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+
+    /* Metric Cards Grid */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; position: relative; overflow: hidden; }
+    .metric-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary-gradient); }
+    .metric-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+    .metric-val { font-size: 28px; font-weight: 800; color: #fff; }
+    .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Nav Tabs */
+    .tabs-bar { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; padding-bottom: 12px; overflow-x: auto; }
+    .tab-btn { background: none; border: none; padding: 10px 18px; border-radius: 12px; color: var(--text-muted); font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .tab-btn:hover { color: #fff; background: var(--card-bg); }
+    .tab-btn.active { color: #fff; background: var(--card-elevated); border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
+    /* Panels */
+    .panel { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .panel-title { font-size: 17px; font-weight: 750; color: #fff; display: flex; align-items: center; gap: 10px; }
+
+    /* Forms */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+    input, select, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; background: #07090e; border: 1px solid var(--border-color); color: #fff; font-size: 14px; outline: none; transition: 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
+    
+    /* Buttons */
+    .btn { background: var(--primary-gradient); color: #fff; padding: 12px 22px; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn-secondary { background: var(--card-elevated); border: 1px solid var(--border-color); color: var(--text-main); }
+    .btn-secondary:hover { background: #1e2c47; }
+    .btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; }
+    .btn-danger:hover { background: #ef4444; color: #fff; }
+    .btn-success { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 8px; }
+
+    /* Tables */
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th { text-align: left; padding: 14px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); letter-spacing: 0.5px; }
+    td { padding: 14px; font-size: 13.5px; border-bottom: 1px solid #131c2e; vertical-align: middle; }
+    tr:hover { background: #131b2c; }
+    .code-pill { font-family: 'JetBrains Mono', monospace; background: #07090e; border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-weight: 700; color: var(--neon-cyan); display: inline-flex; align-items: center; gap: 8px; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+    .badge-active { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-unused { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .badge-expired { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+
+    /* Cards Grid for Servers & Plans */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+    .server-card { background: #0b101c; border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; position: relative; }
+    .server-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .server-flag { font-size: 28px; }
+    .server-name { font-weight: 700; font-size: 15px; color: #fff; }
+    .server-endpoint { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Oracle Robot Banner */
+    .robot-banner { background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-logo">FP</div>
+        <div>
+          <h1 class="brand-title">Free-Pone Control Center</h1>
+          <div class="brand-sub">Plateforme d'Administration VPN & Télémétrie Mobile</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="/download/Free-Pone.apk" class="btn">
+          <span>📥</span> Télécharger Free-Pone.apk (v1.0.0)
+        </a>
+      </div>
+    </header>
+
+    <!-- Robot Banner -->
+    <div id="robotBanner" class="robot-banner">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 32px;">🤖</span>
+        <div>
+          <strong style="color: #fff; font-size: 15px;">Robot d'Auto-Réservation Oracle Cloud</strong>
+          <p id="robotText" style="color: var(--text-muted); font-size: 13px; margin-top: 2px;">Vérification continue toutes les 60 secondes...</p>
+        </div>
+      </div>
+      <div id="robotBadge" class="badge badge-unused">En surveillance</div>
+    </div>
+
+    <!-- Live Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total des Jetons</div>
+        <div class="metric-val" id="mTotal">0</div>
+        <div class="metric-sub">Codes générés dans la base</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Sessions Actives</div>
+        <div class="metric-val" style="color: var(--neon-green);" id="mActive">0</div>
+        <div class="metric-sub">Téléphones actuellement connectés</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Jetons Non Activés</div>
+        <div class="metric-val" style="color: var(--neon-cyan);" id="mUnused">0</div>
+        <div class="metric-sub">Prêts pour vos clients</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Trafic Routé</div>
+        <div class="metric-val" style="color: var(--neon-pink);" id="mTraffic">0 Mo</div>
+        <div class="metric-sub">Consommation réseau cumulée</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Nœuds VPN Actifs</div>
+        <div class="metric-val" style="color: var(--neon-amber);" id="mServers">0</div>
+        <div class="metric-sub">Serveurs relais en ligne</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('vouchers')">🎫 Gestion des Forfaits</button>
+      <button class="tab-btn" onclick="switchTab('servers')">🌐 Nœuds & Serveurs VPN</button>
+      <button class="tab-btn" onclick="switchTab('plans')">📦 Catalogue d'Offres</button>
+      <button class="tab-btn" onclick="switchTab('broadcast')">📢 Alertes & Broadcast In-App</button>
+      <button class="tab-btn" onclick="switchTab('ota')">🚀 Mises à Jour OTA</button>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 1 : VOUCHERS & GESTION DES CODES D'ACCÈS                     -->
+    <!-- =================================================================== -->
+    <div id="section-vouchers" class="tab-section">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">⚡ Générer de Nouveaux Codes d'Accès</div>
+          <a href="/api/admin/export-vouchers" class="btn btn-secondary btn-sm">📄 Exporter tous les codes (CSV)</a>
+        </div>
+        <form id="createVoucherForm">
+          <div class="form-grid">
+            <div>
+              <label>Formule / Offre</label>
+              <select id="vPlanSelect" onchange="syncPlanDetails()">
+                <!-- Rempli dynamiquement depuis le catalogue -->
+              </select>
+            </div>
+            <div>
+              <label>Nombre de codes</label>
+              <input type="number" id="vCount" value="1" min="1" max="100" required>
+            </div>
+            <div>
+              <label>Durée de validité (Jours)</label>
+              <input type="number" id="vDays" value="30" min="1" required>
+            </div>
+            <div>
+              <label>Quota Data (Go)</label>
+              <select id="vMaxGb">
+                <option value="5">5 Go</option>
+                <option value="15">15 Go</option>
+                <option value="25">25 Go</option>
+                <option value="50">50 Go</option>
+                <option value="100">100 Go</option>
+                <option value="0">Illimité</option>
+              </select>
+            </div>
+            <div>
+              <label>Appareils autorisés</label>
+              <select id="vMaxDevices">
+                <option value="1">1 Appareil (Standard)</option>
+                <option value="2">2 Appareils (Duo)</option>
+                <option value="3">3 Appareils (Famille)</option>
+                <option value="5">5 Appareils (Multi-Pass)</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn">⚡ Générer les codes instantanément</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📋 Répertoire des Codes d'Accès Émis</div>
+          <input type="text" id="voucherSearch" placeholder="🔍 Rechercher un code ou une offre..." style="max-width: 280px;" oninput="filterVouchersTable()">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Code d'Accès</th>
+                <th>Formule</th>
+                <th>Appareils</th>
+                <th>Statut</th>
+                <th>Quota</th>
+                <th>Consommé</th>
+                <th>IP WireGuard</th>
+                <th>Expiration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vouchersTableBody">
+              <tr><td colspan="9" style="text-align: center; color: var(--text-muted);">Chargement des données...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 2 : GESTION DES SERVEURS & NŒUDS VPN                         -->
+    <!-- =================================================================== -->
+    <div id="section-servers" class="tab-section" style="display: none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">➕ Déployer un Nouveau Nœud VPN</div>
+        </div>
+        <form id="addServerForm">
+          <div class="form-grid">
+            <div>
+              <label>Nom du Serveur</label>
+              <input type="text" id="srvName" placeholder="Ex: Canada (Montréal)" required>
+            </div>
+            <div>
+              <label>Code Pays (2 lettres)</label>
+              <input type="text" id="srvCode" placeholder="CA" maxlength="2" required>
+            </div>
+            <div>
+              <label>Drapeau Emoji</label>
+              <input type="text" id="srvFlag" placeholder="🇨🇦" required>
+            </div>
+            <div>
+              <label>Endpoint (IP ou Domaine:Port)</label>
+              <input type="text" id="srvEndpoint" placeholder="vpn-ca.free-pone.com:51820" required>
+            </div>
+            <div>
+              <label>Ping estimé (ms)</label>
+              <input type="number" id="srvPing" value="45" min="1">
+            </div>
+            <div>
+              <label>Clé Publique WireGuard</label>
+              <input type="text" id="srvPubkey" placeholder="WG_PUBKEY_ABC...">
+            </div>
+          </div>
+          <button type="submit" class="btn">🌐 Ajouter le Nœud au Réseau</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🌍 Nœuds VPN Actifs dans l'Application Mobile</div>
+        </div>
+        <div class="cards-grid" id="serversGrid">
+          <!-- Rempli dynamiquement -->
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 3 : CATALOGUE DES OFFRES TARIFAIRES                          -->
+    <!-- =================================================================== -->
+    <div id="section-plans" class="tab-section" style="display: none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">➕ Ajouter ou Modifier une Offre Commerciale</div>
+        </div>
+        <form id="addPlanForm">
+          <div class="form-grid">
+            <div>
+              <label>Identifiant Unique (ex: plan_weekend)</label>
+              <input type="text" id="planId" placeholder="plan_weekend" required>
+            </div>
+            <div>
+              <label>Nom de l'Offre</label>
+              <input type="text" id="planName" placeholder="Pass Week-end Illimité" required>
+            </div>
+            <div>
+              <label>Durée (Jours)</label>
+              <input type="number" id="planDays" value="3" min="1" required>
+            </div>
+            <div>
+              <label>Tarif Public (GNF, FCFA, €...)</label>
+              <input type="text" id="planPrice" placeholder="15 000 GNF" required>
+            </div>
+            <div>
+              <label>Badge d'Affichage (ex: Promo, VIP)</label>
+              <input type="text" id="planBadge" placeholder="Populaire">
+            </div>
+            <div style="grid-column: span 2;">
+              <label>Description visible sur l'application mobile</label>
+              <input type="text" id="planDesc" placeholder="Accès complet sans limite de bande passante.">
+            </div>
+          </div>
+          <button type="submit" class="btn">💾 Enregistrer dans le Catalogue</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🏷️ Offres Actuellement Diffusées aux Utilisateurs</div>
+        </div>
+        <div class="cards-grid" id="plansGrid">
+          <!-- Rempli dynamiquement -->
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 4 : BROADCAST & ALERTES IN-APP                               -->
+    <!-- =================================================================== -->
+    <div id="section-broadcast" class="tab-section" style="display: none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📢 Diffuser un Message en Direct dans l'Application</div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+          Ce message s'affichera immédiatement en tête de l'application sur le téléphone de tous vos utilisateurs dès qu'ils l'ouvrent.
+        </p>
+        <form id="broadcastForm">
+          <div style="margin-bottom: 16px;">
+            <label>Message d'annonce</label>
+            <input type="text" id="annMessage" placeholder="Ex: 🔥 Nouveau serveur en France disponible ! Vitesse doublée." required>
+          </div>
+          <div class="form-grid">
+            <div>
+              <label>Type d'alerte</label>
+              <select id="annType">
+                <option value="info">🔵 Information (Bleu)</option>
+                <option value="promo">🟢 Promotion / Succès (Vert)</option>
+                <option value="warning">🟠 Maintenance / Alerte (Orange)</option>
+              </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 24px;">
+              <input type="checkbox" id="annActive" checked style="width: auto;">
+              <label for="annActive" style="margin-bottom: 0; cursor: pointer;">Activer la diffusion immédiatement</label>
+            </div>
+          </div>
+          <button type="submit" class="btn">📢 Publier l'Annonce In-App</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 5 : MISES À JOUR OTA (OVER-THE-AIR)                          -->
+    <!-- =================================================================== -->
+    <div id="section-ota" class="tab-section" style="display: none;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🚀 Gestionnaire de Déploiement OTA</div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+          Lorsqu'une nouvelle version de l'application est prête, indiquez-la ici. L'application mobile affichera une fenêtre et téléchargera la mise à jour en tâche de fond automatiquement sans passer par Google Play.
+        </p>
+        <form id="otaForm">
+          <div class="form-grid">
+            <div>
+              <label>Version Publique (ex: 1.1.0)</label>
+              <input type="text" id="otaVersion" value="1.0.0" required>
+            </div>
+            <div>
+              <label>Code de version entier (ex: 2)</label>
+              <input type="number" id="otaVersionCode" value="1" min="1" required>
+            </div>
+            <div style="grid-column: span 2;">
+              <label>Nouveautés & Corrections (Affiché aux utilisateurs)</label>
+              <input type="text" id="otaChangelog" value="Nouvelle interface 3D avec Motion Design et serveurs rapides." required>
+            </div>
+          </div>
+          <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="otaMandatory" style="width: auto;">
+            <label for="otaMandatory" style="margin-bottom: 0; cursor: pointer;">Rendre cette mise à jour obligatoire (bloquer l'ancienne version)</label>
+          </div>
+          <button type="submit" class="btn">📢 Déployer la Mise à Jour à Tous les Téléphones</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let allVouchers = [];
+    let allPlans = [];
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-section').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('section-' + tabId).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    async function loadOverview() {
+      try {
+        const res = await fetch('/api/admin/overview');
+        const data = await res.json();
+        document.getElementById('mTotal').innerText = data.totalVouchers || 0;
+        document.getElementById('mActive').innerText = data.activeVouchers || 0;
+        document.getElementById('mUnused').innerText = data.unusedVouchers || 0;
+        document.getElementById('mTraffic').innerText = (data.totalMb || 0) + ' Mo';
+        document.getElementById('mServers').innerText = data.serversCount || 0;
+
+        const rb = data.provisionStatus;
+        if (rb) {
+          const banner = document.getElementById('robotBanner');
+          const text = document.getElementById('robotText');
+          const badge = document.getElementById('robotBadge');
+          if (rb.status === 'SUCCESS') {
+            banner.style.background = 'rgba(16, 185, 129, 0.15)';
+            banner.style.borderColor = '#10b981';
+            text.innerHTML = `🎉 <strong>${rb.message}</strong>`;
+            badge.className = 'badge badge-active';
+            badge.innerText = 'Serveur Prêt !';
+          } else {
+            text.innerText = `[Tentative #${rb.attempt || 1}] ${rb.message || 'Surveillance active...'}`;
+            badge.className = 'badge badge-unused';
+            badge.innerText = `Tentative #${rb.attempt || 1}`;
+          }
+        }
+      } catch (e) {
+        console.error('Erreur chargement métriques:', e);
+      }
+    }
+
+    async function loadVouchers() {
+      try {
+        const res = await fetch('/api/admin/vouchers');
+        const data = await res.json();
+        allVouchers = data.vouchers || [];
+        renderVouchersTable(allVouchers);
+      } catch (e) {
+        console.error('Erreur chargement jetons:', e);
+      }
+    }
+
+    function renderVouchersTable(list) {
+      const tbody = document.getElementById('vouchersTableBody');
+      tbody.innerHTML = '';
+
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Aucun code trouvé.</td></tr>';
+        return;
+      }
+
+      list.forEach(v => {
+        let badge = '<span class="badge badge-unused">Non Activé</span>';
+        if (v.is_active === 0) {
+          badge = '<span class="badge badge-expired">Révoqué</span>';
+        } else if (v.is_online) {
+          badge = '<span class="badge badge-active" style="animation: pulse 1.5s infinite; background: rgba(16, 185, 129, 0.25); border: 1px solid #10b981; color: #34d399;">🟢 EN DIRECT</span>';
+        } else if (v.activated_at) {
+          const isExp = v.expires_at && new Date() > new Date(v.expires_at);
+          badge = isExp ? '<span class="badge badge-expired">Expiré</span>' : '<span class="badge badge-active">Actif</span>';
+        }
+
+        const pct = v.percent_used || 0;
+        const usedStr = v.used_bytes >= (1024*1024*1024) ? (v.used_bytes / (1024*1024*1024)).toFixed(2) + ' Go' : (v.used_bytes / (1024*1024)).toFixed(1) + ' Mo';
+        const maxStr = v.max_bytes > 0 ? (v.max_bytes / (1024*1024*1024)).toFixed(1) + ' Go' : 'Illimité';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <span class="code-pill">
+              ${v.code}
+              <button onclick="navigator.clipboard.writeText('${v.code}'); alert('Code copié : ${v.code}')" style="background: none; border: none; cursor: pointer; color: var(--text-muted);" title="Copier">📋</button>
+            </span>
+          </td>
+          <td><strong>${v.plan_name}</strong></td>
+          <td><span style="font-weight:700; color: ${v.devices_count >= v.max_devices ? 'var(--neon-pink)' : 'var(--neon-cyan)'}">${v.devices_label || (v.devices_count + '/' + v.max_devices)}</span></td>
+          <td>${badge}</td>
+          <td>${maxStr}</td>
+          <td>
+            <div style="font-weight: 700; color: ${v.is_online ? 'var(--neon-green)' : 'var(--neon-cyan)'}; font-family: monospace; font-size: 13px;">
+              ${usedStr} ${v.max_bytes > 0 ? `<span style="color: var(--text-muted); font-size: 11px;">/ ${maxStr} (${pct}%)</span>` : ''}
+            </div>
+            ${v.max_bytes > 0 ? `
+            <div style="background: #172033; border-radius: 6px; height: 6px; width: 120px; margin-top: 5px; overflow: hidden;">
+              <div style="background: ${pct > 85 ? 'var(--neon-pink)' : 'linear-gradient(90deg, #00f0ff, #10b981)'}; width: ${pct}%; height: 100%;"></div>
+            </div>` : ''}
+          </td>
+          <td style="font-family: monospace; color: var(--text-muted);">${v.assigned_ip || '—'}</td>
+          <td>${v.expires_at ? new Date(v.expires_at).toLocaleString() : (v.duration_days + ' j. après activation')}</td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button onclick="toggleVoucher(${v.id})" class="btn ${v.is_active ? 'btn-secondary' : 'btn-success'} btn-sm">
+                ${v.is_active ? 'Désactiver' : 'Réactiver'}
+              </button>
+              <button onclick="deleteVoucher(${v.id})" class="btn btn-danger btn-sm">🗑️</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterVouchersTable() {
+      const q = document.getElementById('voucherSearch').value.toLowerCase().trim();
+      const filtered = allVouchers.filter(v => v.code.toLowerCase().includes(q) || v.plan_name.toLowerCase().includes(q));
+      renderVouchersTable(filtered);
+    }
+
+    async function toggleVoucher(id) {
+      await fetch('/api/admin/vouchers/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      loadVouchers();
+      loadOverview();
+    }
+
+    async function deleteVoucher(id) {
+      if (!confirm('Supprimer définitivement ce jeton d\'accès ?')) return;
+      await fetch(`/api/admin/vouchers?id=${id}`, { method: 'DELETE' });
+      loadVouchers();
+      loadOverview();
+    }
+
+    document.getElementById('createVoucherForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const plan_name = document.getElementById('vPlanSelect').value;
+      const count = document.getElementById('vCount').value;
+      const duration_days = document.getElementById('vDays').value;
+      const max_gb = document.getElementById('vMaxGb').value;
+      const max_devices = document.getElementById('vMaxDevices').value;
+
+      const res = await fetch('/api/admin/vouchers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan_name, count, duration_days, max_gb, max_devices })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message);
+        loadVouchers();
+        loadOverview();
+      }
+    });
+
+    // --- SERVEURS ---
+    async function loadServers() {
+      const res = await fetch('/api/admin/servers');
+      const data = await res.json();
+      const grid = document.getElementById('serversGrid');
+      grid.innerHTML = '';
+
+      (data.servers || []).forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'server-card';
+        div.innerHTML = `
+          <div class="server-top">
+            <span class="server-flag">${s.flag}</span>
+            <span class="badge ${s.is_active ? 'badge-active' : 'badge-expired'}">${s.is_active ? 'En Ligne' : 'Hors Ligne'}</span>
+          </div>
+          <div class="server-name">${s.name}</div>
+          <div class="server-endpoint">${s.endpoint}</div>
+          <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; color: var(--text-muted);">
+            <span>Ping : <strong style="color: var(--neon-cyan);">${s.ping_ms} ms</strong></span>
+            <span>Charge : <strong style="color: var(--neon-green);">${s.load_percent}%</strong></span>
+          </div>
+          <div style="margin-top: 14px; text-align: right;">
+            <button onclick="deleteServer(${s.id})" class="btn btn-danger btn-sm">Supprimer</button>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    document.getElementById('addServerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('srvName').value,
+        country_code: document.getElementById('srvCode').value,
+        flag: document.getElementById('srvFlag').value,
+        endpoint: document.getElementById('srvEndpoint').value,
+        ping_ms: document.getElementById('srvPing').value,
+        public_key: document.getElementById('srvPubkey').value
+      };
+      await fetch('/api/admin/servers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      alert('Serveur ajouté avec succès !');
+      e.target.reset();
+      loadServers();
+      loadOverview();
+    });
+
+    async function deleteServer(id) {
+      if (!confirm('Supprimer ce serveur VPN ?')) return;
+      await fetch(`/api/admin/servers?id=${id}`, { method: 'DELETE' });
+      loadServers();
+      loadOverview();
+    }
+
+    // --- PLANS / CATALOGUE ---
+    async function loadPlans() {
+      const res = await fetch('/api/admin/plans');
+      const data = await res.json();
+      allPlans = data.plans || [];
+      const grid = document.getElementById('plansGrid');
+      const select = document.getElementById('vPlanSelect');
+      grid.innerHTML = '';
+      select.innerHTML = '';
+
+      allPlans.forEach(p => {
+        // Option select
+        const opt = document.createElement('option');
+        opt.value = p.name;
+        opt.dataset.days = p.duration_days;
+        opt.dataset.gb = p.max_gb;
+        opt.innerText = `${p.name} (${p.price})`;
+        select.appendChild(opt);
+
+        // Card
+        const div = document.createElement('div');
+        div.className = 'server-card';
+        div.innerHTML = `
+          <div class="server-top">
+            <span style="font-weight: 800; font-size: 18px; color: var(--neon-cyan);">${p.price}</span>
+            <span class="badge badge-unused">${p.badge || 'Offre'}</span>
+          </div>
+          <div class="server-name">${p.name}</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">${p.description || ''}</div>
+          <div style="margin-top: 12px; font-size: 12px; color: var(--neon-green);">
+            ✓ Validité : ${p.duration_days} jours · ${p.max_gb === 0 ? 'Données Illimitées' : p.max_gb + ' Go'}
+          </div>
+          <div style="margin-top: 14px; text-align: right;">
+            <button onclick="deletePlan('${p.id}')" class="btn btn-danger btn-sm">Supprimer</button>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+      syncPlanDetails();
+    }
+
+    function syncPlanDetails() {
+      const select = document.getElementById('vPlanSelect');
+      const sel = select.options[select.selectedIndex];
+      if (sel) {
+        document.getElementById('vDays').value = sel.dataset.days || 30;
+        document.getElementById('vMaxGb').value = sel.dataset.gb || 0;
+      }
+    }
+
+    document.getElementById('addPlanForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        id: document.getElementById('planId').value,
+        name: document.getElementById('planName').value,
+        duration_days: document.getElementById('planDays').value,
+        price: document.getElementById('planPrice').value,
+        badge: document.getElementById('planBadge').value,
+        description: document.getElementById('planDesc').value
+      };
+      await fetch('/api/admin/plans', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      alert('Offre enregistrée dans le catalogue !');
+      e.target.reset();
+      loadPlans();
+    });
+
+    async function deletePlan(id) {
+      if (!confirm('Supprimer cette offre ?')) return;
+      await fetch(`/api/admin/plans?id=${id}`, { method: 'DELETE' });
+      loadPlans();
+    }
+
+    // --- ANNONCE ---
+    async function loadAnnouncement() {
+      const res = await fetch('/api/admin/announcement');
+      const data = await res.json();
+      if (data.announcement) {
+        document.getElementById('annMessage').value = data.announcement.message || '';
+        document.getElementById('annType').value = data.announcement.type || 'info';
+        document.getElementById('annActive').checked = data.announcement.is_active === 1;
+      }
+    }
+
+    document.getElementById('broadcastForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        message: document.getElementById('annMessage').value,
+        type: document.getElementById('annType').value,
+        is_active: document.getElementById('annActive').checked
+      };
+      await fetch('/api/admin/announcement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      alert('Annonce In-App mise à jour et diffusée avec succès !');
+    });
+
+    // --- OTA ---
+    async function loadOta() {
+      const res = await fetch('/api/admin/app-version');
+      const data = await res.json();
+      document.getElementById('otaVersion').value = data.latest_version || '1.0.0';
+      document.getElementById('otaVersionCode').value = data.latest_version_code || 1;
+      document.getElementById('otaChangelog').value = data.changelog || '';
+      document.getElementById('otaMandatory').checked = data.mandatory || false;
+    }
+
+    document.getElementById('otaForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        version: document.getElementById('otaVersion').value,
+        version_code: document.getElementById('otaVersionCode').value,
+        changelog: document.getElementById('otaChangelog').value,
+        mandatory: document.getElementById('otaMandatory').checked
+      };
+      await fetch('/api/admin/app-version', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      alert('Paramètres OTA enregistrés avec succès !');
+    });
+
+    // Initialisation
+    loadOverview();
+    loadVouchers();
+    loadServers();
+    loadPlans();
+    loadAnnouncement();
+    loadOta();
+
+    // Actualisation temps réel automatique toutes les 3 secondes
+    setInterval(() => {
+      loadOverview();
+      const searchBox = document.getElementById('voucherSearch');
+      if (!searchBox || searchBox.value.trim() === '') {
+        loadVouchers();
+      }
+    }, 3000);
+  </script>
+</body>
+</html>
